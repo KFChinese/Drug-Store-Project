@@ -144,3 +144,41 @@ INSERT INTO prescription VALUES ('247','526-96-6122','420-06-1964','054');
 INSERT INTO filledprescription VALUES ('234','2020-11-30','349');
 -- contracttext, supervisorid, startdate, enddate, pharmacyid, pharmacompid
 INSERT INTO contracts VALUES ('This is the text of the contract','430','2020-01-30','2020-01-30','954','542');
+
+
+-- The 5 Questions.
+
+-- 1. Adding a new contract that Drugs R Us signed to the database.
+INSERT INTO contracts VALUES ('This is the text of the contract','SUPERVISORID','STARTDATE','ENDDATE','PHARMACYID','PHARMACOMPID');
+
+-- 2. Removing all of a type of drug from stock.
+DELETE stock
+FROM stock
+INNER JOIN drugs
+ON drugs.drugid=stock.drugid
+WHERE drugtradename='KoolKoff';
+
+-- 3. Getting lowest price among multiple locations
+SELECT drugtradename, pharmadrugprice, pharmacyname
+FROM ((stock
+INNER JOIN drugs ON drugs.drugid = stock.drugid)
+INNER JOIN pharmacy ON pharmacy.pharmacyid = stock.pharmacyid)
+WHERE drugtradename = 'Enkephalin'
+ORDER BY 2
+LIMIT 1;
+
+-- 4. Show all prescriptions for a user
+SELECT patientname, drugtradename, doctorname
+FROM ((prescription
+INNER JOIN drugs ON drugs.drugid = prescription.drugid) INNER JOIN patient ON patient.patientssn = prescription.patientssn)INNER JOIN doctor ON doctor.doctorssn = prescription.doctorssn
+WHERE patientname = 'Raine Selwyn';
+
+-- 5. List all patients over 50 and their doctors.
+SELECT patientname, patientage, doctorname
+FROM patient
+INNER JOIN doctor ON doctor.doctorssn = patient.doctorssn
+WHERE patientage > 50;
+
+
+
+
